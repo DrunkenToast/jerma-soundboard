@@ -12,6 +12,10 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         setSupportActionBar(findViewById(R.id.toolbar))
+
+        val intent = Intent(this, AudioService::class.java)
+        startService(intent)
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
