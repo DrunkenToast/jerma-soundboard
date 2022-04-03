@@ -7,6 +7,7 @@ import android.media.AudioManager
 import android.media.SoundPool
 import android.os.Binder
 import android.os.IBinder
+import android.util.Log
 import android.widget.Toast
 
 
@@ -19,6 +20,7 @@ class AudioService : Service() {
     }
 
     override fun onStart(intent: Intent?, startId: Int) {
+        Log.d("debug", "Audio service started")
         Toast.makeText(this, "Audio service started",
             Toast.LENGTH_LONG).show()
     }
@@ -37,4 +39,5 @@ class AudioServiceBinder : Binder() {
                 .setUsage(AudioAttributes.USAGE_MEDIA)
                 .build()
         ).build()
+
 }

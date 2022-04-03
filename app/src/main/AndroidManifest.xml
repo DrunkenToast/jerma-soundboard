@@ -9,10 +9,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppDevProject">
+
         <service
             android:name=".AudioService"
             android:enabled="true"
-            android:exported="true"></service>
+            android:exported="true"
+        />
 
         <activity
             android:name=".SettingsActivity"
