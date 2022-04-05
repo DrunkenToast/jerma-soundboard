@@ -11,14 +11,29 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.appdevproject.R
 import com.example.appdevproject.data.AudioData
 
-class AudioAdapter(private val audios: List<AudioData>) :
+class AudioAdapter(private val audios: List<AudioData>, private val actionListener: ActionListener) :
     RecyclerView.Adapter<AudioAdapter.AudioViewHolder>() {
 
-    class AudioViewHolder(itemView: View) :
+    private val listener: ActionListener = actionListener
+
+    interface ActionListener {
+        fun onClicked(audio: AudioData)
+        fun OnSliderChange(audio: AudioData, value: Int)
+    }
+
+    class AudioViewHolder(itemView: View, private val listener: ActionListener) :
         RecyclerView.ViewHolder(itemView) {
 
         private val audioTitle: TextView = itemView.findViewById(R.id.audio_title)
         private var currentAudioData: AudioData? = null
+
+        init {
+            itemView.setOnClickListener {
+                currentAudioData?.let {
+                    listener.onClicked(it)
+                }
+            }
+        }
 
         fun bind(audio: AudioData) {
             Log.d("debug", "Binding")
@@ -32,7 +47,7 @@ class AudioAdapter(private val audios: List<AudioData>) :
         Log.d("debug", "HERE")
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.audio_item, parent, false)
-        return AudioViewHolder(view)
+        return AudioViewHolder(view, listener)
     }
 
     override fun onBindViewHolder(holder: AudioViewHolder, position: Int) {
