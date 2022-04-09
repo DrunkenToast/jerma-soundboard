@@ -5,27 +5,41 @@
     android:layout_height="100dp"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+
+    <ImageButton
+        android:id="@+id/button"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/jerma_button"
+        android:layout_margin="3dp">
+
+
+    </ImageButton>
+
     <TextView
         android:id="@+id/audio_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:layout_marginStart="84dp"
-        android:layout_marginBottom="4dp"
-        android:text="Test"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        />
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="5dp"
 
-    <SeekBar
-        android:id="@+id/seekBar"
-        android:layout_height="21dp"
-        android:layout_width="200dp"
+        android:text="Sample text"
+        android:gravity="center"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+
+        android:autoSizeMaxTextSize="60dp"
+        android:autoSizeMinTextSize="20dp"
+        android:autoSizeStepGranularity="1sp"
+        android:autoSizeTextType="uniform"
+
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toEndOf="@id/audio_title"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+
+        android:shadowColor="#FFFFFF"
+        android:shadowDx="0"
+        android:shadowDy="0"
+        android:shadowRadius="20"
         />
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>
