@@ -1,11 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <PreferenceCategory android:title="General">
-        <ListPreference
-            android:defaultValue="3"
-            android:dialogTitle="@string/playback"
-            android:entries="@array/pref_playback"
 
+        <ListPreference
+            android:title="@string/pref_playback"
+            android:defaultValue="3"
+            android:dialogTitle="@string/pref_playback"
+            android:entries="@array/pref_playback"
+            android:entryValues="@array/pref_playback_values"
+            android:summary="@string/pref_playback"
+            android:key="fzef"
             />
+
+
+        <Preference
+            android:summary="Jerma twitch"
+            android:title="Jerma twitch">
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:data="fqioefjreiog" />
+        </Preference>
     </PreferenceCategory>
 </PreferenceScreen>

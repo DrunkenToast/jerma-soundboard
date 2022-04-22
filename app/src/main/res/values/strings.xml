@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">App Dev Project</string>
     <string name="settings">Settings</string>
-    <string name="playback">Playback rate</string>
+    <string name="pref_playback">Playback rate</string>
     <string-array name="pref_playback">
         <item>0.25x</item>
         <item>0.5x</item>
@@ -11,7 +11,18 @@
         <item>1.5x</item>
         <item>2x</item>
     </string-array>
-    <string name="title_activity_add_audio">AddAudio</string>
+    <string-array name="pref_playback_values">
+        <item>0.25</item>
+        <item>0.5</item>
+        <item>0.75</item>
+        <item>1</item>
+        <item>1.25</item>
+        <item>1.5</item>
+        <item>2</item>
+    </string-array>
+    <string name="title_activity_add_audio">Add audio</string>
+    <string name="title_activity_settings">Settings</string>
+
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
     <string name="second_fragment_label">Second Fragment</string>

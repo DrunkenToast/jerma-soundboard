@@ -14,8 +14,10 @@
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.33" />
         <entry key="app/src/main/res/layout/activity_settings.xml" value="0.67" />
         <entry key="app/src/main/res/layout/audio_item.xml" value="0.4068224889450411" />
+        <entry key="app/src/main/res/layout/settings_activity.xml" value="0.1082427536231884" />
         <entry key="app/src/main/res/menu/popup_menu.xml" value="0.14814814814814814" />
         <entry key="app/src/main/res/xml/preferences.xml" value="0.19894964473277726" />
+        <entry key="app/src/main/res/xml/root_preferences.xml" value="0.1082427536231884" />
       </map>
     </option>
   </component>

@@ -18,7 +18,6 @@ class AddAudioActivity : AppCompatActivity() {
         filePickerButton.setOnClickListener {
             showFileDialog()
         }
-
     }
 
     fun showFileDialog() {
