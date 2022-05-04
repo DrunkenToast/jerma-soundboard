@@ -10,13 +10,17 @@ import android.os.IBinder
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.appdevproject.audioList.AudioAdapter
 import com.example.appdevproject.data.AudioData
 import com.example.appdevproject.data.DataSource
+import java.io.BufferedReader
+import java.io.InputStreamReader
+import java.net.HttpURLConnection
+import java.net.URL
 
 class MainActivity : AppCompatActivity() {
     private lateinit var mService: AudioService
@@ -70,6 +74,8 @@ class MainActivity : AppCompatActivity() {
                     Toast.LENGTH_SHORT).show()
             }
         })
+
+//        checkStreamStatus()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -90,5 +96,37 @@ class MainActivity : AppCompatActivity() {
         }
 
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun checkStreamStatus() {
+        // Request returns html, not json. In a script tag there is JSON with the stream state.
+        val url = URL("https://www.twitch.tv/xqcow")
+        val statusText: TextView = findViewById(R.id.stream_status_text)
+        statusText.text = "Loading..."
+
+        with(url.openConnection() as HttpURLConnection) {
+            requestMethod = "GET"
+
+            BufferedReader(InputStreamReader(inputStream)).use {
+
+                val response = StringBuffer()
+                var inputLine = it.readLine()
+                var status = false
+                while(inputLine != null) {
+                    if (inputLine.contains("\"isLiveBroadcast\": true")) {
+                        status = true
+                    }
+                    response.append(inputLine)
+                    inputLine = it.readLine()
+                }
+
+                if (status) {
+                    statusText.text = "JERMA IS LIVEEEE"
+                }
+                else {
+                    statusText.text = "not live :(("
+                }
+            }
+        }
     }
 }
