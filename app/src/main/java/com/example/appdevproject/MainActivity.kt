@@ -14,9 +14,13 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.appdevproject.api.APIHandler
 import com.example.appdevproject.audioList.AudioAdapter
 import com.example.appdevproject.data.AudioData
 import com.example.appdevproject.data.DataSource
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.net.HttpURLConnection
@@ -56,9 +60,10 @@ class MainActivity : AppCompatActivity() {
 
         // RECYCLER
         Log.d("debug", "HERE")
-        val audioList = DataSource(this.resources).getAudioList()
+        val audioList = DataSource(this).getAudioList()
         val recyclerView: RecyclerView = findViewById(R.id.rv_audio_list)
         val layoutManager = GridLayoutManager(this, 3)
+
         recyclerView.layoutManager = layoutManager
         recyclerView.setHasFixedSize(true)
 
@@ -75,7 +80,11 @@ class MainActivity : AppCompatActivity() {
             }
         })
 
-//        checkStreamStatus()
+        val streamStatusText = findViewById<TextView>(R.id.stream_status_text)
+        val api = APIHandler(this)
+        api.streamStatus.observe(this) {
+            streamStatusText.text = it
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -96,37 +105,5 @@ class MainActivity : AppCompatActivity() {
         }
 
         return super.onOptionsItemSelected(item)
-    }
-
-    private fun checkStreamStatus() {
-        // Request returns html, not json. In a script tag there is JSON with the stream state.
-        val url = URL("https://www.twitch.tv/xqcow")
-        val statusText: TextView = findViewById(R.id.stream_status_text)
-        statusText.text = "Loading..."
-
-        with(url.openConnection() as HttpURLConnection) {
-            requestMethod = "GET"
-
-            BufferedReader(InputStreamReader(inputStream)).use {
-
-                val response = StringBuffer()
-                var inputLine = it.readLine()
-                var status = false
-                while(inputLine != null) {
-                    if (inputLine.contains("\"isLiveBroadcast\": true")) {
-                        status = true
-                    }
-                    response.append(inputLine)
-                    inputLine = it.readLine()
-                }
-
-                if (status) {
-                    statusText.text = "JERMA IS LIVEEEE"
-                }
-                else {
-                    statusText.text = "not live :(("
-                }
-            }
-        }
     }
 }

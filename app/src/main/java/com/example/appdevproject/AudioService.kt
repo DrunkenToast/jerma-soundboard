@@ -12,7 +12,6 @@ import android.widget.Toast
 
 
 class AudioService : Service() {
-
     private var audioServiceBinder: IBinder = AudioServiceBinder()
     private lateinit var mContext: Context
     override fun onBind(intent: Intent): IBinder {

@@ -1,5 +1,9 @@
 <resources>
     <string name="app_name">Jerma soundboard</string>
+    <string name="loading">Loading...</string>
+    <string name="twitch_url">https://www.twitch.tv/jerma985</string>
+    <string name="live">Jerma is live!</string>
+    <string name="not_live">Jerma is not live :(((</string>
     <string name="settings">Settings</string>
     <string name="pref_playback">Playback rate</string>
     <string-array name="pref_playback">

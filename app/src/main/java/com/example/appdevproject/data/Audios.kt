@@ -3,112 +3,133 @@ package com.example.appdevproject.data
 import android.content.res.Resources
 import com.example.appdevproject.R
 
-fun audios(resources: Resources): List<AudioData> {
+fun audios(): List<AudioData> {
     return listOf(
         AudioData(
             id = 1,
             title = "AA",
-            src = R.raw.aa
+            src = R.raw.aa,
+            custom = false,
         ),
         AudioData(
             id = 2,
             title = "EE",
-            src = R.raw.ee
+            src = R.raw.ee,
+            custom = false,
         ),
         AudioData(
             id = 3,
             title = "OO",
-            src = R.raw.oo
+            src = R.raw.oo,
+            custom = false,
         ),
         AudioData(
             id = 4,
             title = "Audio Jungle",
-            src = R.raw.aj
+            src = R.raw.aj,
+            custom = false,
         ),
         AudioData(
             id = 5,
             title = "AYAYAYA",
-            src = R.raw.ayayaya
+            src = R.raw.ayayaya,
+            custom = false,
         ),
         AudioData(
             id = 6,
             title = "Sphee",
-            src = R.raw.sphee
+            src = R.raw.sphee,
+            custom = false,
         ),
         AudioData(
             id = 7,
             title = "Nya",
-            src = R.raw.nya
+            src = R.raw.nya,
+            custom = false,
         ),
         AudioData(
             id = 8,
             title = "What happened?",
-            src = R.raw.whathappened
+            src = R.raw.whathappened,
+            custom = false,
         ),
         AudioData(
             id = 9,
             title = "Sneeze",
-            src = R.raw.sneeze
+            src = R.raw.sneeze,
+            custom = false,
         ),
         AudioData(
             id = 10,
             title = "Nice, Ron",
-            src = R.raw.nr
+            src = R.raw.nr,
+            custom = false,
         ),
         AudioData(
             id = 11,
             title = "What, I'm not allowed to sneeze?",
-            src = R.raw.ws
+            src = R.raw.ws,
+            custom = false,
         ),
         AudioData(
             id = 12,
             title = "Gas",
-            src = R.raw.gas
+            src = R.raw.gas,
+            custom = false,
         ),
         AudioData(
             id = 13,
             title = "Oooh, whoopsie",
-            src = R.raw.ooh_whoopsie
+            src = R.raw.ooh_whoopsie,
+            custom = false,
         ),
         AudioData(
             id = 14,
             title = "aHHHHhwaheha",
-            src = R.raw.ahhhhhwaheha
+            src = R.raw.ahhhhhwaheha,
+            custom = false,
         ),
         AudioData(
             id = 15,
             title = "Zero",
-            src = R.raw.zero
+            src = R.raw.zero,
+            custom = false,
         ),
         AudioData(
             id = 16,
             title = "One",
-            src = R.raw.one
+            src = R.raw.one,
+            custom = false,
         ),
         AudioData(
             id = 17,
             title = "EEEUUU",
-            src = R.raw.eeeuuu
+            src = R.raw.eeeuuu,
+            custom = false,
         ),
         AudioData(
             id = 18,
             title = "mmmNN",
-            src = R.raw.mmmnn
+            src = R.raw.mmmnn,
+            custom = false,
         ),
         AudioData(
             id = 19,
             title = "urAE",
-            src = R.raw.urae
+            src = R.raw.urae,
+            custom = false,
         ),
         AudioData(
             id = 20,
             title = "ULTRA!",
-            src = R.raw.ultra
+            src = R.raw.ultra,
+            custom = false,
         )
         ,AudioData(
             id = 21,
             title = "Ooey gooey cheesy!",
-            src = R.raw.ooey
+            src = R.raw.ooey,
+            custom = false,
         ),
         /*AudioData(
             id = 1,

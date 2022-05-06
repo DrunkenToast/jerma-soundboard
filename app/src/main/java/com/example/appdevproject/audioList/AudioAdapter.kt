@@ -11,7 +11,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.appdevproject.R
 import com.example.appdevproject.data.AudioData
-
+// TODO combine db cursor, notifyDataSetChanged
 class AudioAdapter(private val audios: List<AudioData>, private val actionListener: ActionListener) :
     RecyclerView.Adapter<AudioAdapter.AudioViewHolder>(){
 
@@ -22,18 +22,19 @@ class AudioAdapter(private val audios: List<AudioData>, private val actionListen
         fun onLongClicked(audio: AudioData)
     }
 
+
     class AudioViewHolder(itemView: View, private val listener: ActionListener) :
         RecyclerView.ViewHolder(itemView) {
         private val title: TextView = itemView.findViewById(R.id.audio_title)
         private val button: ImageButton = itemView.findViewById(R.id.button)
 
         private var currentAudioData: AudioData? = null
-
         init {
 
             button.setOnClickListener {
                 currentAudioData?.let {
                     listener.onClicked(it)
+
                 }
             }
 
@@ -58,6 +59,7 @@ class AudioAdapter(private val audios: List<AudioData>, private val actionListen
             .inflate(R.layout.audio_item, parent, false)
         return AudioViewHolder(view, listener)
     }
+
 
     override fun onBindViewHolder(holder: AudioViewHolder, position: Int) {
         holder.bind(audios[position])
