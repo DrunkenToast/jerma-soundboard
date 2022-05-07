@@ -9,6 +9,8 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.net.toUri
+import androidx.lifecycle.ViewModelProvider
+import com.example.appdevproject.db.AudioViewModel
 import com.example.appdevproject.db.DBHelper
 import java.io.File
 import java.nio.file.Files
@@ -41,6 +43,7 @@ class AddAudioActivity : AppCompatActivity() {
                 val db = DBHelper(this, null)
 
                 db.addAudio(t, f)
+                ViewModelProvider(this).get(AudioViewModel::class.java).loadAudio(this)
                 finish()
             }
         }
@@ -49,7 +52,7 @@ class AddAudioActivity : AppCompatActivity() {
     var getResult = registerForActivityResult(ActivityResultContracts.OpenDocument()) {
         result ->
         run {
-            filenameText.text = result.path
+            filenameText.text = result.toString()
         }
     }
 

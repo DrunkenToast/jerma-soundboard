@@ -5,9 +5,9 @@ import android.content.Context
 import android.content.res.Resources
 import com.example.appdevproject.db.DBHelper
 
-class DataSource(private val context: Context) {
+class DataSource() {
     fun getAudioList(): List<AudioData> {
-        val audioDB = arrayOf<AudioData>()
+        /*val audioDB = arrayOf<AudioData>()
         val db = DBHelper(context, null)
         val cursor = db.getAudio()
 
@@ -18,7 +18,7 @@ class DataSource(private val context: Context) {
                 cursor.getString(cursor.getColumnIndexOrThrow(DBHelper.COL_TITLE)),
                 cursor.getString(cursor.getColumnIndexOrThrow(DBHelper.COL_SRC)),
             )
-        } while (cursor.moveToNext())
+        } while (cursor.moveToNext())*/
 
         return audios()
     }

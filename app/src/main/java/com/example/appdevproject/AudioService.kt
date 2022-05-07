@@ -3,12 +3,16 @@ package com.example.appdevproject
 import android.app.Service
 import android.content.Context
 import android.content.Intent
+import android.database.Cursor
 import android.media.AudioAttributes
 import android.media.SoundPool
+import android.net.Uri
 import android.os.Binder
 import android.os.IBinder
+import android.provider.MediaStore
 import android.util.Log
 import android.widget.Toast
+import androidx.loader.content.CursorLoader
 
 
 class AudioService : Service() {
@@ -41,8 +45,20 @@ class AudioService : Service() {
             .build()
     ).build()
 
-    fun load(audioID: Int, audio: Int) {
-        loadedIDs[audioID] = soundPool.load(mContext, audio, 1)
+    fun load(audioID: Int, src: Int) {
+        unload(audioID)
+        loadedIDs[audioID] = soundPool.load(mContext, src, 1)
+    }
+
+    fun load(audioID: Int, src: String) {
+        unload(audioID)
+        loadedIDs[audioID] = soundPool.load(getRealPathFromURI(this.mContext, src), 1)
+    }
+
+    fun unload(audioID: Int) {
+        val soundID = loadedIDs[audioID]
+        if (soundID != null)
+            soundPool.unload(soundID)
     }
 
     fun play(audioID: Int, volume: Float) {
@@ -57,6 +73,17 @@ class AudioService : Service() {
 
     inner class AudioServiceBinder : Binder() {
         fun getService(): AudioService = this@AudioService
+    }
+
+    // https://stackoverflow.com/questions/35529124/android-soundpool-error-while-loading-file
+    private fun getRealPathFromURI(context: Context, uriString: String): String {
+        val proj = arrayOf(MediaStore.Audio.Media.DATA)
+        val loader = CursorLoader(context, Uri.parse(uriString), proj, null, null, null)
+        val cursor: Cursor? = loader.loadInBackground()
+        cursor!!.moveToFirst()
+        val column_index: Int = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATA)
+        cursor.moveToFirst()
+        return cursor.getString(column_index)
     }
 }
 

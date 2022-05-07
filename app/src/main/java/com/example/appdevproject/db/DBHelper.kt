@@ -34,7 +34,7 @@ class DBHelper(context: Context, factory: SQLiteDatabase.CursorFactory?) :
         db.execSQL("DROP TABLE IF EXISTS $TABLE_NAME");
     }
 
-    fun getAudio(): Cursor? {
+    fun getAudio(): Cursor {
         val db = this.readableDatabase
         return db.rawQuery("SELECT * FROM $TABLE_NAME", null)
     }

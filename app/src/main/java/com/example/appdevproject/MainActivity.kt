@@ -4,6 +4,7 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
+import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.IBinder
@@ -12,12 +13,17 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.appdevproject.api.APIHandler
 import com.example.appdevproject.audioList.AudioAdapter
 import com.example.appdevproject.data.AudioData
 import com.example.appdevproject.data.DataSource
+import com.example.appdevproject.db.AudioViewModel
+import com.example.appdevproject.db.DBHelper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -29,6 +35,7 @@ import java.net.URL
 class MainActivity : AppCompatActivity() {
     private lateinit var mService: AudioService
     private var mBound: Boolean = false
+    private lateinit var viewModel: AudioViewModel
 
     private var serviceConnection: ServiceConnection = object : ServiceConnection {
         override fun onServiceConnected(p0: ComponentName?, p1: IBinder?) {
@@ -36,12 +43,18 @@ class MainActivity : AppCompatActivity() {
             mService = binder.getService()
             mBound = true
 
-            Log.d("TAG", "SET")
-            Toast.makeText(this@MainActivity, "Connected",
+            Toast.makeText(this@MainActivity, "Audio service connected",
                 Toast.LENGTH_SHORT).show()
-            for (audio in DataSource(this@MainActivity.resources).getAudioList()) {
+
+            for (audio in DataSource().getAudioList()) {
                 mService.load(audio.id, audio.src)
             }
+
+            /*viewModel.AudioDBList.observe(this@MainActivity) {
+                Log.d("RON", "Observed")
+                for (audio in it)
+                    mService.load(audio.id, audio.src)
+            }*/
         }
 
         override fun onServiceDisconnected(p0: ComponentName?) {
@@ -50,17 +63,26 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+
+
+
+
         setSupportActionBar(findViewById(R.id.toolbar))
+
+        viewModel = ViewModelProvider(this).get(AudioViewModel::class.java)
+        viewModel.loadAudio(this)
 
         val intent = Intent(this, AudioService::class.java)
         bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE)
 
+
+
         // RECYCLER
-        Log.d("debug", "HERE")
-        val audioList = DataSource(this).getAudioList()
+        val audioList = DataSource().getAudioList()
         val recyclerView: RecyclerView = findViewById(R.id.rv_audio_list)
         val layoutManager = GridLayoutManager(this, 3)
 
@@ -68,17 +90,23 @@ class MainActivity : AppCompatActivity() {
         recyclerView.setHasFixedSize(true)
 
         recyclerView.adapter = AudioAdapter(audioList, object: AudioAdapter.ActionListener {
-            override fun onClicked(audioData: AudioData) {
+            override fun onClicked(audioID: Int) {
                 if (mBound) {
-                    mService.play(audioData.id, 1.0F)
+                    mService.play(audioID, 1.0F)
                 }
             }
 
-            override fun onLongClicked(audio: AudioData) {
-                Toast.makeText(this@MainActivity, "Long press!",
-                    Toast.LENGTH_SHORT).show()
+            override fun onLongClicked(audioID: Int) {
+                val db = DBHelper(this@MainActivity, null)
+                db.deleteAudio(audioID)
+                viewModel.loadAudio(this@MainActivity)
             }
         })
+
+        viewModel.AudioDBList.observe(this@MainActivity) {
+            Log.d("RON", "Observed")
+            (recyclerView.adapter as AudioAdapter).setAudioDB(it)
+        }
 
         val streamStatusText = findViewById<TextView>(R.id.stream_status_text)
         val api = APIHandler(this)
@@ -106,4 +134,5 @@ class MainActivity : AppCompatActivity() {
 
         return super.onOptionsItemSelected(item)
     }
+
 }
