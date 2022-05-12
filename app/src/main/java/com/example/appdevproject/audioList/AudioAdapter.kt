@@ -1,5 +1,6 @@
 package com.example.appdevproject.audioList
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -25,9 +26,17 @@ class AudioAdapter(private val defaultAudioList: List<AudioData>, private val ac
     }
 
     fun setAudioDB(audioDB: List<AudioDataDB>) {
-        for (audio in audioDB)
+        audioList.clear()
+        for (audio in defaultAudioList)
+            audioList.add(AudioItem(audio.id, audio.title, false))
+
+        for (audio in audioDB) {
+            Log.d("TEST", audio.title)
             audioList.add(AudioItem(audio.id, audio.title, true))
+        }
+
         notifyDataSetChanged()
+        Log.d("TEST", "set audio")
     }
 
     class AudioViewHolder(itemView: View, private val listener: ActionListener) :
@@ -63,11 +72,12 @@ class AudioAdapter(private val defaultAudioList: List<AudioData>, private val ac
         }
     }
 
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AudioViewHolder {
+    init {
         for (audio in defaultAudioList)
             audioList.add(AudioItem(audio.id, audio.title, false))
+    }
 
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AudioViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.audio_item, parent, false)
         return AudioViewHolder(view, listener)
@@ -80,7 +90,7 @@ class AudioAdapter(private val defaultAudioList: List<AudioData>, private val ac
     }
 
     override fun getItemCount(): Int {
-        return defaultAudioList.size
+        return audioList.size
     }
 
     data class AudioItem(

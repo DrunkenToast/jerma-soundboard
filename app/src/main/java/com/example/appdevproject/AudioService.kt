@@ -55,7 +55,7 @@ class AudioService : Service() {
         loadedIDs[audioID] = soundPool.load(getRealPathFromURI(this.mContext, src), 1)
     }
 
-    fun unload(audioID: Int) {
+    private fun unload(audioID: Int) {
         val soundID = loadedIDs[audioID]
         if (soundID != null)
             soundPool.unload(soundID)
