@@ -50,11 +50,12 @@ class MainActivity : AppCompatActivity() {
                 mService.load(audio.id, audio.src)
             }
 
-            /*viewModel.AudioDBList.observe(this@MainActivity) {
+            viewModel.AudioDBList.observe(this@MainActivity) {
                 Log.d("RON", "Observed")
                 for (audio in it)
                     mService.load(audio.id, audio.src)
-            }*/
+                }
+
         }
 
         override fun onServiceDisconnected(p0: ComponentName?) {
@@ -66,6 +67,7 @@ class MainActivity : AppCompatActivity() {
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
 
 
 
@@ -131,8 +133,6 @@ class MainActivity : AppCompatActivity() {
                 startActivity(intent)
             }
         }
-
         return super.onOptionsItemSelected(item)
     }
-
 }

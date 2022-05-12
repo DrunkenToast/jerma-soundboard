@@ -1,10 +1,13 @@
 package com.example.appdevproject
 
+import android.content.SharedPreferences
 import android.os.Bundle
+import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.PreferenceFragmentCompat
 
-class SettingsActivity : AppCompatActivity() {
+class SettingsActivity : AppCompatActivity(),
+    SharedPreferences.OnSharedPreferenceChangeListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,6 +27,24 @@ class SettingsActivity : AppCompatActivity() {
 
             val sp = preferenceScreen.sharedPreferences
             val prefScreen = preferenceScreen
+
+        }
+
+    }
+
+    override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String?) {
+        when(key) {
+            "playback" -> {
+                val rate = sharedPreferences.getString(key, "1")
+                when(rate?.toFloat()) {
+                    0.25F -> {
+
+                    }
+                }
+            }
+            "twitch" -> {
+
+            }
         }
     }
 }

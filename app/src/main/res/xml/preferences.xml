@@ -9,13 +9,14 @@
             android:entries="@array/pref_playback"
             android:entryValues="@array/pref_playback_values"
             android:summary="@string/pref_playback"
-            android:key="fzef"
+            android:key="playback"
             />
 
 
         <Preference
             android:summary="Jerma twitch"
-            android:title="Jerma twitch">
+            android:title="Jerma twitch"
+            android:key="twitch">
             <intent
                 android:action="android.intent.action.VIEW"
                 android:data="fqioefjreiog" />
