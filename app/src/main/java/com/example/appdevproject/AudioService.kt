@@ -52,6 +52,7 @@ class AudioService : Service() {
 
     fun load(audioID: Int, src: String) {
         unload(audioID)
+        Log.d("TAG", "$audioID load called")
         loadedIDs[audioID] = soundPool.load(getRealPathFromURI(this.mContext, src), 1)
     }
 
@@ -63,7 +64,7 @@ class AudioService : Service() {
 
     fun play(audioID: Int, volume: Float) {
         loadedIDs[audioID]?.let {
-            Log.d("TAG", "S")
+            Log.d("TAG", "Found")
             soundPool.play(it, volume, volume, 1, 0, 1.0F)
         }
         Toast.makeText(mContext, "playing",

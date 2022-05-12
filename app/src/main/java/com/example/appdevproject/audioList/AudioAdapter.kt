@@ -25,18 +25,22 @@ class AudioAdapter(private val defaultAudioList: List<AudioData>, private val ac
         fun onLongClicked(audioID: Int)
     }
 
-    fun setAudioDB(audioDB: List<AudioDataDB>) {
+    init {
+        setDefaultAudio()
+    }
+
+    private fun setDefaultAudio() {
         audioList.clear()
         for (audio in defaultAudioList)
             audioList.add(AudioItem(audio.id, audio.title, false))
+    }
+    fun setAudioDB(audioDB: MutableList<AudioDataDB>) {
+        setDefaultAudio()
 
-        for (audio in audioDB) {
-            Log.d("TEST", audio.title)
+        for (audio in audioDB)
             audioList.add(AudioItem(audio.id, audio.title, true))
-        }
 
         notifyDataSetChanged()
-        Log.d("TEST", "set audio")
     }
 
     class AudioViewHolder(itemView: View, private val listener: ActionListener) :
@@ -70,11 +74,6 @@ class AudioAdapter(private val defaultAudioList: List<AudioData>, private val ac
             if (audio.custom) // TODO change image
                 title.text = audio.title + " DB"
         }
-    }
-
-    init {
-        for (audio in defaultAudioList)
-            audioList.add(AudioItem(audio.id, audio.title, false))
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AudioViewHolder {

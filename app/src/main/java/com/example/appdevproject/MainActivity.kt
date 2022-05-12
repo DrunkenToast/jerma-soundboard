@@ -13,6 +13,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -45,11 +46,8 @@ class MainActivity : AppCompatActivity() {
             for (audio in DataSource().getAudioList()) {
                 mService.load(audio.id, audio.src)
             }
-
             if (checkPermission()) {
-                val audiolist = viewModel.AudioDBList.value
-                if (audiolist != null)
-                    serviceLoadAudioDB(audiolist)
+                serviceLoadAudioDB()
             }
 
 
@@ -59,9 +57,12 @@ class MainActivity : AppCompatActivity() {
             mBound = false
         }
     }
-    private fun serviceLoadAudioDB(audioDataDB: MutableList<AudioDataDB>) {
-        for (audio in audioDataDB)
-            mService.load(audio.id, audio.src)
+    private fun serviceLoadAudioDB() {
+        Log.d("TAG", "loaded")
+        val audioList = viewModel.AudioDBList.value
+        if (audioList != null)
+            for (audio in audioList)
+                mService.load(audio.id, audio.src)
 
     }
 
@@ -69,11 +70,8 @@ class MainActivity : AppCompatActivity() {
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        setupPermissions()
 
-
-
-
+        setupPermissions() // TODO even adding permissions doesnt help?? wth. Maybe try copying to internal storage and reading that
 
         setSupportActionBar(findViewById(R.id.toolbar))
 
@@ -84,8 +82,7 @@ class MainActivity : AppCompatActivity() {
         bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE)
 
 
-
-        // RECYCLER
+        // RECYCLERVIEW
         val audioList = DataSource().getAudioList()
         val recyclerView: RecyclerView = findViewById(R.id.rv_audio_list)
         val layoutManager = GridLayoutManager(this, 3)
@@ -107,11 +104,13 @@ class MainActivity : AppCompatActivity() {
             }
         })
 
+        // Update recyclerview | Observe changes to audio list
         viewModel.AudioDBList.observe(this@MainActivity) {
-            Log.d("RON", "Observed")
+            Log.d("TAG", "Observed")
             (recyclerView.adapter as AudioAdapter).setAudioDB(it)
         }
 
+        // Update stream status
         val streamStatusText = findViewById<TextView>(R.id.stream_status_text)
         val api = APIHandler(this)
         api.streamStatus.observe(this) {
@@ -132,10 +131,14 @@ class MainActivity : AppCompatActivity() {
             }
             R.id.addaudio -> {
                 val intent = Intent(this, AddAudioActivity::class.java)
-                startActivity(intent)
+                addAudioLauncher.launch(intent)
             }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    private val addAudioLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+        viewModel.loadAudio(this@MainActivity)
     }
 
     override fun onRequestPermissionsResult(
@@ -144,10 +147,17 @@ class MainActivity : AppCompatActivity() {
         grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-
+        when (requestCode) {
+            PERMISSION_REQUEST_CODE -> {
+                if (grantResults.isEmpty() || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+                    // denied
+                }
+                else {
+                    serviceLoadAudioDB()
+                }
+            }
+        }
     }
-
-
 
     private fun setupPermissions() {
         if (checkPermission()) {
@@ -158,9 +168,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun checkPermission(): Boolean {
+
         val permission = ContextCompat.checkSelfPermission(this,
             Manifest.permission.READ_EXTERNAL_STORAGE)
+        Log.d("TAG", "Permission" + (permission != PackageManager.PERMISSION_GRANTED))
 
-        return permission != PackageManager.PERMISSION_GRANTED
+        return permission == PackageManager.PERMISSION_GRANTED
     }
 }
