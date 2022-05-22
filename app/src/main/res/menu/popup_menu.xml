@@ -3,5 +3,5 @@
     <item android:id="@+id/settings"
         android:title="@string/settings" />
     <item android:id="@+id/addaudio"
-        android:title="Add audio" />
+        android:title="@string/add_audio" />
 </menu>

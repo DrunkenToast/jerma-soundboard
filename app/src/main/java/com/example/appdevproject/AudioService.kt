@@ -1,8 +1,10 @@
 package com.example.appdevproject
 
+import android.Manifest
 import android.app.Service
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.database.Cursor
 import android.media.AudioAttributes
 import android.media.SoundPool
@@ -12,7 +14,9 @@ import android.os.IBinder
 import android.provider.MediaStore
 import android.util.Log
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.loader.content.CursorLoader
+import androidx.preference.PreferenceManager
 
 
 class AudioService : Service() {
@@ -52,8 +56,8 @@ class AudioService : Service() {
 
     fun load(audioID: Int, src: String) {
         unload(audioID)
-        Log.d("TAG", "$audioID load called")
-        loadedIDs[audioID] = soundPool.load(getRealPathFromURI(this.mContext, src), 1)
+        // TODO: Crashes because of permissions (or something else)
+        //loadedIDs[audioID] = soundPool.load(getRealPathFromURI(mContext, src), 1)
     }
 
     private fun unload(audioID: Int) {
@@ -64,11 +68,14 @@ class AudioService : Service() {
 
     fun play(audioID: Int, volume: Float) {
         loadedIDs[audioID]?.let {
-            Log.d("TAG", "Found")
-            soundPool.play(it, volume, volume, 1, 0, 1.0F)
+            soundPool.play(it, volume, volume, 1, 0, getPlaybackRate())
         }
-        Toast.makeText(mContext, "playing",
-            Toast.LENGTH_SHORT).show()
+    }
+
+    private fun getPlaybackRate(): Float {
+        return PreferenceManager.getDefaultSharedPreferences(this)
+            .getString(getString(R.string.playback_pref), "1").toString().toFloatOrNull()
+            ?: return 1F
     }
 
 
@@ -76,15 +83,27 @@ class AudioService : Service() {
         fun getService(): AudioService = this@AudioService
     }
 
+    // TODO doesn't work, have tried debugging this for a long time now :)
+    // Permissions are hard :/
     // https://stackoverflow.com/questions/35529124/android-soundpool-error-while-loading-file
     private fun getRealPathFromURI(context: Context, uriString: String): String {
-        val proj = arrayOf(MediaStore.Audio.Media.DATA)
-        val loader = CursorLoader(context, Uri.parse(uriString), proj, null, null, null)
+        val proj = arrayOf(MediaStore.Audio.Media.DATA, MediaStore.Downloads.DATA)
+        val loader = CursorLoader(context, Uri.parse(uriString), null, null, null, null)
         val cursor: Cursor? = loader.loadInBackground()
         cursor!!.moveToFirst()
-        val column_index: Int = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATA)
+        val column_index: Int = cursor.getColumnIndex(MediaStore.Audio.Media.DATA)
         cursor.moveToFirst()
         return cursor.getString(column_index)
+
+    }
+
+    fun checkPermission(): Boolean {
+
+        val permission = ContextCompat.checkSelfPermission(mContext,
+            Manifest.permission.READ_EXTERNAL_STORAGE)
+        Log.d("TAG", "Service permission " + (permission == PackageManager.PERMISSION_GRANTED))
+
+        return permission == PackageManager.PERMISSION_GRANTED
     }
 }
 

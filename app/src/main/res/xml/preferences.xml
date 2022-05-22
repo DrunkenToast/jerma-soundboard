@@ -1,17 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <PreferenceCategory android:title="General">
 
         <ListPreference
-            android:title="@string/pref_playback"
+            android:title="@string/playback"
+            android:dialogTitle="@string/playback"
+            android:entries="@array/playback_pref"
+            android:entryValues="@array/playback_values"
+            app:useSimpleSummaryProvider="true"
+            android:key="@string/playback_pref"
             android:defaultValue="3"
-            android:dialogTitle="@string/pref_playback"
-            android:entries="@array/pref_playback"
-            android:entryValues="@array/pref_playback_values"
-            android:summary="@string/pref_playback"
-            android:key="playback"
             />
 
+        <ListPreference
+            android:title="@string/theme"
+            android:dialogTitle="@string/theme"
+            android:entries="@array/theme_pref"
+            android:entryValues="@array/theme_values"
+            app:useSimpleSummaryProvider="true"
+            android:key="@string/theme_pref"
+            android:defaultValue="0"
+        />
 
         <Preference
             android:summary="Jerma twitch"
@@ -19,7 +29,7 @@
             android:key="twitch">
             <intent
                 android:action="android.intent.action.VIEW"
-                android:data="fqioefjreiog" />
+                android:data="@string/twitch_url" />
         </Preference>
     </PreferenceCategory>
 </PreferenceScreen>

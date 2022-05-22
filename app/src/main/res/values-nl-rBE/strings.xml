@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Jerma geluidsbord</string>
+    <string name="loading">Laden…</string>
+    <string name="live">Jerma is live!</string>
+    <string name="visit_stream">Bezoek stroming</string>
+    <string name="not_live">Jerma is niet live :(((</string>
+    <string name="no_load">Kon niet laden D:</string>
+    <string name="settings">Instellingen</string>
+    <string name="pick_name">Geef het een naam</string>
+    <string name="add_audio">Geluidje toevoegen</string>
+    <string name="choose_file">Geluidje kiezen</string>
+
+    <!-- Preferences -->
+    <string name="playback">Afspeel snelheid</string>
+    <string name="normal_playback">Normaal</string>
+
+    <string name="theme">Thema</string>
+
+    <string name="auto_theme">Standaard thema van systeem</string>
+    <string name="dark_theme">Donker thema</string>
+    <string name="light_theme">Oogverblindend thema</string>
+
+    <string name="title_activity_add_audio">Audio toevoegen</string>
+    <string name="title_activity_settings">Instellingen</string>
+</resources>

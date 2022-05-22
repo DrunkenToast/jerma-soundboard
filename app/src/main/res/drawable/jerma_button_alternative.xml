@@ -4,5 +4,5 @@
         android:state_pressed="true" />
     <item android:drawable="@drawable/jerma_o"
         android:state_focused="true" />
-    <item android:drawable="@drawable/jerma_chin" />
+    <item android:drawable="@drawable/jerma_disgust" />
 </selector>

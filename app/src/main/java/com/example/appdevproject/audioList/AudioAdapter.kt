@@ -50,7 +50,6 @@ class AudioAdapter(private val defaultAudioList: List<AudioData>, private val ac
 
         private var currentAudioData: AudioItem? = null
         init {
-
             button.setOnClickListener {
                 currentAudioData?.let {
                     listener.onClicked(it.id)
@@ -71,8 +70,9 @@ class AudioAdapter(private val defaultAudioList: List<AudioData>, private val ac
             currentAudioData = audio
             title.text = audio.title
 
-            if (audio.custom) // TODO change image
-                title.text = audio.title + " DB"
+            if (audio.custom) {
+                button.setBackgroundResource(R.drawable.jerma_button_alternative)
+            }
         }
     }
 
@@ -81,8 +81,6 @@ class AudioAdapter(private val defaultAudioList: List<AudioData>, private val ac
             .inflate(R.layout.audio_item, parent, false)
         return AudioViewHolder(view, listener)
     }
-
-
 
     override fun onBindViewHolder(holder: AudioViewHolder, position: Int) {
         holder.bind(audioList[position])

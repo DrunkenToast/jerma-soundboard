@@ -14,7 +14,7 @@
         android:textSize="24dp"
         android:textStyle="bold"
         android:textColor="@color/black"
-        android:text="Add epic audio!!!"
+        android:text="@string/title_activity_add_audio"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -26,7 +26,7 @@
         android:layout_marginTop="50dp"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="Name it!"
+        android:hint="@string/pick_name"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/add_audio_title"
@@ -35,7 +35,7 @@
         android:id="@+id/pick_file_but"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Choose file"
+        android:text="@string/choose_file"
         android:layout_marginTop="76dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -56,10 +56,12 @@
         android:id="@+id/add_audio_but"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Add audio"
+        android:text="@string/add_audio"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="586dp" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="100dp"
+        />
 
 
 

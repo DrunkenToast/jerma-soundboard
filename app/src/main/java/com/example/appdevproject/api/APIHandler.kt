@@ -8,6 +8,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.BufferedReader
 import java.io.InputStreamReader
+import java.lang.Exception
 import java.net.HttpURLConnection
 import java.net.URL
 
@@ -23,21 +24,26 @@ class APIHandler(private val context : Context) {
         // Request returns html, not json. In a script tag there is JSON with the stream state.
         val url = URL(context.getString(R.string.twitch_url))
 
-        streamStatus.postValue("Loading...")
+        streamStatus.postValue(context.getString(R.string.loading))
 
-        with(url.openConnection() as HttpURLConnection) {
-            requestMethod = "GET"
+        try {
+            with(url.openConnection() as HttpURLConnection) {
+                requestMethod = "GET"
 
-            BufferedReader(InputStreamReader(inputStream)).use {
-                val status = it.readText().contains("\"isLiveBroadcast\":true")
+                BufferedReader(InputStreamReader(inputStream)).use {
+                    val status = it.readText().contains("\"isLiveBroadcast\":true")
 
-                if (status) {
-                    streamStatus.postValue(context.getString(R.string.live))
-                }
-                else {
-                    streamStatus.postValue(context.getString(R.string.not_live))
+                    if (status) {
+                        streamStatus.postValue(context.getString(R.string.live))
+                    }
+                    else {
+                        streamStatus.postValue(context.getString(R.string.not_live))
+                    }
                 }
             }
+        }
+        catch (e: Exception) {
+            streamStatus.postValue(context.getString(R.string.no_load))
         }
     }
 }

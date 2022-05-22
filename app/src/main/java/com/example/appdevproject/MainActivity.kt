@@ -15,9 +15,11 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
+import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.appdevproject.api.APIHandler
@@ -67,20 +69,35 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        PreferenceManager.getDefaultSharedPreferences(this)
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES) {
+            setTheme(AppCompatDelegate.MODE_NIGHT_YES)
+        } else {
+            setTheme(AppCompatDelegate.MODE_NIGHT_NO)
+        }
 
         setupPermissions() // TODO even adding permissions doesnt help?? wth. Maybe try copying to internal storage and reading that
 
         setSupportActionBar(findViewById(R.id.toolbar))
 
+        // Update stream status
+        val streamStatusText = findViewById<TextView>(R.id.stream_status_text)
+        val api = APIHandler(this)
+        api.streamStatus.observe(this) {
+            streamStatusText.text = it
+        }
+
+
         viewModel = ViewModelProvider(this).get(AudioViewModel::class.java)
         viewModel.loadAudio(this)
 
+        // Start Audio Service
         val intent = Intent(this, AudioService::class.java)
         bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE)
-
 
         // RECYCLERVIEW
         val audioList = DataSource().getAudioList()
@@ -90,6 +107,7 @@ class MainActivity : AppCompatActivity() {
         recyclerView.layoutManager = layoutManager
         recyclerView.setHasFixedSize(true)
 
+        // Actions from recyclerview
         recyclerView.adapter = AudioAdapter(audioList, object: AudioAdapter.ActionListener {
             override fun onClicked(audioID: Int) {
                 if (mBound) {
@@ -110,12 +128,7 @@ class MainActivity : AppCompatActivity() {
             (recyclerView.adapter as AudioAdapter).setAudioDB(it)
         }
 
-        // Update stream status
-        val streamStatusText = findViewById<TextView>(R.id.stream_status_text)
-        val api = APIHandler(this)
-        api.streamStatus.observe(this) {
-            streamStatusText.text = it
-        }
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -167,7 +180,9 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun checkPermission(): Boolean {
+
+
+    fun checkPermission(): Boolean {
 
         val permission = ContextCompat.checkSelfPermission(this,
             Manifest.permission.READ_EXTERNAL_STORAGE)
