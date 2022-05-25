@@ -6,16 +6,17 @@ import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Bundle
 import android.os.IBinder
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
@@ -24,7 +25,6 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.appdevproject.api.APIHandler
 import com.example.appdevproject.audioList.AudioAdapter
-import com.example.appdevproject.data.AudioDataDB
 import com.example.appdevproject.data.DataSource
 import com.example.appdevproject.db.AudioViewModel
 import com.example.appdevproject.db.DBHelper
@@ -33,7 +33,7 @@ class MainActivity : AppCompatActivity() {
     private val PERMISSION_REQUEST_CODE = 100
     private lateinit var mService: AudioService
     private var mBound: Boolean = false
-    private lateinit var viewModel: AudioViewModel
+    private lateinit var audioViewModel: AudioViewModel
 
     private var serviceConnection: ServiceConnection = object : ServiceConnection {
         override fun onServiceConnected(p0: ComponentName?, p1: IBinder?) {
@@ -41,6 +41,7 @@ class MainActivity : AppCompatActivity() {
             mService = binder.getService()
             mBound = true
 
+            setupPermissions()
 
             Toast.makeText(this@MainActivity, "Audio service connected",
                 Toast.LENGTH_SHORT).show()
@@ -51,36 +52,28 @@ class MainActivity : AppCompatActivity() {
             if (checkPermission()) {
                 serviceLoadAudioDB()
             }
-
-
         }
 
         override fun onServiceDisconnected(p0: ComponentName?) {
             mBound = false
         }
     }
+
     private fun serviceLoadAudioDB() {
-        Log.d("TAG", "loaded")
-        val audioList = viewModel.AudioDBList.value
+        Log.d("TAG", "Loading audio files from database")
+        val audioList = audioViewModel.AudioDBList.value
         if (audioList != null)
             for (audio in audioList)
                 mService.load(audio.id, audio.src)
-
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        PreferenceManager.getDefaultSharedPreferences(this)
-
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES) {
-            setTheme(AppCompatDelegate.MODE_NIGHT_YES)
-        } else {
-            setTheme(AppCompatDelegate.MODE_NIGHT_NO)
-        }
-
-        setupPermissions() // TODO even adding permissions doesnt help?? wth. Maybe try copying to internal storage and reading that
+        // Apply theme on startup
+        var sf = PreferenceManager.getDefaultSharedPreferences(this)
+        Util.applyPreferencedTheme(sf, this)
 
         setSupportActionBar(findViewById(R.id.toolbar))
 
@@ -91,13 +84,19 @@ class MainActivity : AppCompatActivity() {
             streamStatusText.text = it
         }
 
-
-        viewModel = ViewModelProvider(this).get(AudioViewModel::class.java)
-        viewModel.loadAudio(this)
+        // Visit stream button
+        val twitchOpenIntent = Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.twitch_url)))
+        val visitStreamButton = findViewById<Button>(R.id.open_stream_but)
+        visitStreamButton.setOnClickListener {
+            startActivity(twitchOpenIntent)
+        }
 
         // Start Audio Service
         val intent = Intent(this, AudioService::class.java)
         bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE)
+
+        audioViewModel = ViewModelProvider(this).get(AudioViewModel::class.java)
+        audioViewModel.loadAudio(this)
 
         // RECYCLERVIEW
         val audioList = DataSource().getAudioList()
@@ -118,12 +117,12 @@ class MainActivity : AppCompatActivity() {
             override fun onLongClicked(audioID: Int) {
                 val db = DBHelper(this@MainActivity, null)
                 db.deleteAudio(audioID)
-                viewModel.loadAudio(this@MainActivity)
+                audioViewModel.loadAudio(this@MainActivity)
             }
         })
 
         // Update recyclerview | Observe changes to audio list
-        viewModel.AudioDBList.observe(this@MainActivity) {
+        audioViewModel.AudioDBList.observe(this@MainActivity) {
             Log.d("TAG", "Observed")
             (recyclerView.adapter as AudioAdapter).setAudioDB(it)
         }
@@ -151,7 +150,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private val addAudioLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-        viewModel.loadAudio(this@MainActivity)
+        audioViewModel.loadAudio(this@MainActivity)
     }
 
     override fun onRequestPermissionsResult(
@@ -176,14 +175,10 @@ class MainActivity : AppCompatActivity() {
         if (checkPermission()) {
             ActivityCompat.requestPermissions(this,
                 arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), PERMISSION_REQUEST_CODE)
-            // DO STUFF
         }
     }
 
-
-
     fun checkPermission(): Boolean {
-
         val permission = ContextCompat.checkSelfPermission(this,
             Manifest.permission.READ_EXTERNAL_STORAGE)
         Log.d("TAG", "Permission" + (permission != PackageManager.PERMISSION_GRANTED))

@@ -125,42 +125,69 @@ fun audios(): List<AudioData> {
             title = "ULTRA!",
             src = R.raw.ultra,
             custom = false,
-        )
-        ,AudioData(
+        ),
+        AudioData(
             id = -21,
             title = "Ooey gooey cheesy!",
             src = R.raw.ooey,
             custom = false,
         ),
-        /*AudioData(
-            id = 1,
-            title = "Birds",
-            src = R.raw.birds
+        //rats
+        AudioData(
+            id = -22,
+            title = "Rats x3",
+            src = R.raw.rats1,
+            custom = false,
         ),
         AudioData(
-            id = 2,
-            title = "Boat",
-            src = R.raw.boat
+            id = -23,
+            title = "Pray at night",
+            src = R.raw.rats2,
+            custom = false,
         ),
         AudioData(
-            id = 3,
-            title = "City",
-            src = R.raw.city
+            id = -24,
+            title = "Giant rat",
+            src = R.raw.rats3,
+            custom = false,
         ),
         AudioData(
-            id = 4,
-            title = "Coffee shop",
-            src = R.raw.coffeeshop
+            id = -25,
+            title = "Trouble",
+            src = R.raw.rats4,
+            custom = false,
+        ),
+        //extra
+        AudioData(
+            id = -26,
+            title = "Noise",
+            src = R.raw.noise,
+            custom = false,
         ),
         AudioData(
-            id = 5,
-            title = "Fireplace",
-            src = R.raw.fireplace
+            id = -27,
+            title = "Uaaghh",
+            src = R.raw.uaaghh,
+            custom = false,
         ),
         AudioData(
-            id = 6,
-            title = "Pink noise",
-            src = R.raw.pinknoise
-        ),*/
+            id = -28,
+            title = "Ketchup",
+            src = R.raw.ketchup,
+            custom = false,
+        ),
+        AudioData(
+            id = -29,
+            title = "Calm down",
+            src = R.raw.calm_down,
+            custom = false,
+        ),
+        AudioData(
+            id = -30,
+            title = "Life is pain",
+            src = R.raw.life_is_pain,
+            custom = false,
+        ),
+
     )
 }

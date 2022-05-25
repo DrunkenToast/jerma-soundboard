@@ -53,25 +53,7 @@ class SettingsActivity : AppCompatActivity(),
             getString(R.string.playback_pref) -> {
             }
             getString(R.string.theme_pref) -> {
-                // TODO apply on startup??
-                when(sharedPreferences.getString(getString(R.string.theme_pref),
-                    getString(R.string.auto_theme_pref))) {
-                    getString(R.string.dark_theme_pref) -> {
-                        Log.d("TAG", "Dark mode")
-                        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-                    }
-                    getString(R.string.light_theme_pref) -> {
-                        Log.d("TAG", "Light mode")
-                        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-                    }
-                    else -> {
-                        if (BuildCompat.isAtLeastQ()) {
-                            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
-                        } else {
-                            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY);
-                        }
-                    }
-                }
+                Util.applyPreferencedTheme(sharedPreferences, this)
             }
         }
 
