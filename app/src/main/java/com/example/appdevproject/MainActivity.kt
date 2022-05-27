@@ -35,6 +35,13 @@ class MainActivity : AppCompatActivity() {
     private var mBound: Boolean = false
     private lateinit var audioViewModel: AudioViewModel
 
+    private fun serviceLoadAudioDB() {
+        val audioList = audioViewModel.AudioDBList.value
+        if (audioList != null)
+            for (audio in audioList)
+                mService.load(audio.id, audio.src)
+    }
+
     private var serviceConnection: ServiceConnection = object : ServiceConnection {
         override fun onServiceConnected(p0: ComponentName?, p1: IBinder?) {
             val binder = p1 as AudioService.AudioServiceBinder
@@ -49,6 +56,7 @@ class MainActivity : AppCompatActivity() {
             for (audio in DataSource().getAudioList()) {
                 mService.load(audio.id, audio.src)
             }
+
             if (checkPermission()) {
                 serviceLoadAudioDB()
             }
@@ -57,14 +65,6 @@ class MainActivity : AppCompatActivity() {
         override fun onServiceDisconnected(p0: ComponentName?) {
             mBound = false
         }
-    }
-
-    private fun serviceLoadAudioDB() {
-        Log.d("TAG", "Loading audio files from database")
-        val audioList = audioViewModel.AudioDBList.value
-        if (audioList != null)
-            for (audio in audioList)
-                mService.load(audio.id, audio.src)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -77,19 +77,7 @@ class MainActivity : AppCompatActivity() {
 
         setSupportActionBar(findViewById(R.id.toolbar))
 
-        // Update stream status
-        val streamStatusText = findViewById<TextView>(R.id.stream_status_text)
-        val api = APIHandler(this)
-        api.streamStatus.observe(this) {
-            streamStatusText.text = it
-        }
-
-        // Visit stream button
-        val twitchOpenIntent = Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.twitch_url)))
-        val visitStreamButton = findViewById<Button>(R.id.open_stream_but)
-        visitStreamButton.setOnClickListener {
-            startActivity(twitchOpenIntent)
-        }
+        setupTwitchStreamViews()
 
         // Start Audio Service
         val intent = Intent(this, AudioService::class.java)
@@ -106,7 +94,7 @@ class MainActivity : AppCompatActivity() {
         recyclerView.layoutManager = layoutManager
         recyclerView.setHasFixedSize(true)
 
-        // Actions from recyclerview
+        // Override actions from audio item
         recyclerView.adapter = AudioAdapter(audioList, object: AudioAdapter.ActionListener {
             override fun onClicked(audioID: Int) {
                 if (mBound) {
@@ -123,16 +111,33 @@ class MainActivity : AppCompatActivity() {
 
         // Update recyclerview | Observe changes to audio list
         audioViewModel.AudioDBList.observe(this@MainActivity) {
-            Log.d("TAG", "Observed")
             (recyclerView.adapter as AudioAdapter).setAudioDB(it)
         }
+    }
 
+    private fun setupTwitchStreamViews() {
+        // Update stream status
+        val streamStatusText = findViewById<TextView>(R.id.stream_status_text)
+        val api = APIHandler(this)
+        api.streamStatus.observe(this) {
+            streamStatusText.text = it
+        }
 
+        // Visit stream button
+        val twitchOpenIntent = Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.twitch_url)))
+        val visitStreamButton = findViewById<Button>(R.id.open_stream_but)
+        visitStreamButton.setOnClickListener {
+            startActivity(twitchOpenIntent)
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.popup_menu, menu)
         return true
+    }
+
+    private val addAudioLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+        audioViewModel.loadAudio(this@MainActivity)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -147,10 +152,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
         return super.onOptionsItemSelected(item)
-    }
-
-    private val addAudioLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-        audioViewModel.loadAudio(this@MainActivity)
     }
 
     override fun onRequestPermissionsResult(

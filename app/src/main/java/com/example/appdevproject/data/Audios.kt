@@ -188,6 +188,12 @@ fun audios(): List<AudioData> {
             src = R.raw.life_is_pain,
             custom = false,
         ),
+        AudioData(
+            id = -31,
+            title = "Giant enemy spider",
+            src = R.raw.giant_enemy_spider,
+            custom = false,
+        ),
 
     )
 }

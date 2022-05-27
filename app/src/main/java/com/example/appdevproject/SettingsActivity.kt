@@ -37,27 +37,16 @@ class SettingsActivity : AppCompatActivity(),
             setPreferencesFromResource(R.xml.preferences, rootKey)
 
             mPreferences = preferenceScreen
-            val prefScreen = preferenceScreen
-        }
-
-        fun updateTheme(theme: Int): Boolean {
-            AppCompatDelegate.setDefaultNightMode(theme)
-            requireActivity().recreate()
-
-            return true
         }
     }
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String?) {
         when(key) {
-            getString(R.string.playback_pref) -> {
-            }
             getString(R.string.theme_pref) -> {
                 Util.applyPreferencedTheme(sharedPreferences, this)
             }
         }
 
     }
-
 
 }

@@ -13,7 +13,6 @@ import com.example.appdevproject.R
 import com.example.appdevproject.data.AudioData
 import com.example.appdevproject.data.AudioDataDB
 
-// TODO combine db cursor, notifyDataSetChanged
 class AudioAdapter(private val defaultAudioList: List<AudioData>, private val actionListener: ActionListener) :
     RecyclerView.Adapter<AudioAdapter.AudioViewHolder>(){
 

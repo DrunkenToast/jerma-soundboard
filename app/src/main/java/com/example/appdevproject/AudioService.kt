@@ -18,7 +18,6 @@ import androidx.core.content.ContextCompat
 import androidx.loader.content.CursorLoader
 import androidx.preference.PreferenceManager
 
-
 class AudioService : Service() {
     private var audioServiceBinder: IBinder = AudioServiceBinder()
     private lateinit var mContext: Context
@@ -78,7 +77,6 @@ class AudioService : Service() {
             ?: return 1F
     }
 
-
     inner class AudioServiceBinder : Binder() {
         fun getService(): AudioService = this@AudioService
     }
@@ -94,16 +92,6 @@ class AudioService : Service() {
         val column_index: Int = cursor.getColumnIndex(MediaStore.Audio.Media.DATA)
         cursor.moveToFirst()
         return cursor.getString(column_index)
-
-    }
-
-    fun checkPermission(): Boolean {
-
-        val permission = ContextCompat.checkSelfPermission(mContext,
-            Manifest.permission.READ_EXTERNAL_STORAGE)
-        Log.d("TAG", "Service permission " + (permission == PackageManager.PERMISSION_GRANTED))
-
-        return permission == PackageManager.PERMISSION_GRANTED
     }
 }
 

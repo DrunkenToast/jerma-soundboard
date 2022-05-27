@@ -33,9 +33,6 @@ class AddAudioActivity : AppCompatActivity() {
         }
 
         addAudioButton.setOnClickListener {
-            /*TODO check if file exists*/
-            /*var f = File(filenameText.text.toString())
-            if (f.exists()) {*/
             var t = titleText.text.toString()
             var f = filenameText.text.toString()
 
@@ -56,8 +53,7 @@ class AddAudioActivity : AppCompatActivity() {
         }
     }
 
-    fun showFileDialog() {
-
+    private fun showFileDialog() {
         getResult.launch(arrayOf("audio/*"))
     }
 }
