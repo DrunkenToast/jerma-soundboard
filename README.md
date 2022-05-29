@@ -7,9 +7,9 @@ What should be included:
   - Settings activity
 - [X] Different layouts for portrait and landscape mode and localization in at least two languages (eng and your own language) 
   - Main activity has a landscape and portrait mode
-- [ ] Two or more user settings 
+- [X] Two or more user settings 
   - Playback rate
-  - Theme settings???
+  - Theme settings
   - Jerma URL
 - [X] RecyclerView
   - Grid layout for audio items
