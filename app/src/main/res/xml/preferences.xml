@@ -24,8 +24,8 @@
         />
 
         <Preference
-            android:summary="Jerma twitch"
-            android:title="Jerma twitch"
+            android:summary="@string/visit_stream"
+            android:title="@string/jerma"
             android:key="twitch">
             <intent
                 android:action="android.intent.action.VIEW"

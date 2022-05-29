@@ -31,6 +31,12 @@ class SettingsActivity : AppCompatActivity(),
             .registerOnSharedPreferenceChangeListener(this)
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        PreferenceManager.getDefaultSharedPreferences(this)
+            .unregisterOnSharedPreferenceChangeListener(this)
+    }
+
     class SettingsFragment : PreferenceFragmentCompat() {
         lateinit var mPreferences: PreferenceScreen
         override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
@@ -46,7 +52,5 @@ class SettingsActivity : AppCompatActivity(),
                 Util.applyPreferencedTheme(sharedPreferences, this)
             }
         }
-
     }
-
 }
