@@ -26,6 +26,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.appdevproject.api.APIHandler
 import com.example.appdevproject.audioList.AudioAdapter
 import com.example.appdevproject.data.DataSource
+import com.example.appdevproject.db.AudioContentProvider
 import com.example.appdevproject.db.AudioViewModel
 import com.example.appdevproject.db.DBHelper
 
@@ -103,9 +104,21 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onLongClicked(audioID: Int) {
-                val db = DBHelper(this@MainActivity, null)
-                db.deleteAudio(audioID)
-                audioViewModel.loadAudio(this@MainActivity)
+                val intent = Intent(
+                    this@MainActivity,
+                    AudioDetailFragment::class.java
+                )
+                addAudioLauncher.launch(intent)
+//                val db = DBHelper(this@MainActivity, null)
+//                contentResolver.delete(
+//                    Uri.withAppendedPath(
+//                        AudioContentProvider.BASE_CONTENT_URI,
+//                        AudioContentProvider.AUDIO_PATH + "/$audioID"
+//                    )
+//                , null, null
+//                )
+//                db.deleteAudio(audioID)
+//                audioViewModel.loadAudio(this@MainActivity)
             }
         })
 

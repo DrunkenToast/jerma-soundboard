@@ -1,5 +1,7 @@
 package com.example.appdevproject
 
+import android.content.ContentResolver
+import android.content.ContentValues
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.content.Intent
@@ -10,6 +12,7 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.net.toUri
 import androidx.lifecycle.ViewModelProvider
+import com.example.appdevproject.db.AudioContentProvider
 import com.example.appdevproject.db.AudioViewModel
 import com.example.appdevproject.db.DBHelper
 import java.io.File
@@ -33,13 +36,21 @@ class AddAudioActivity : AppCompatActivity() {
         }
 
         addAudioButton.setOnClickListener {
-            var t = titleText.text.toString()
-            var f = filenameText.text.toString()
+            val t = titleText.text.toString()
+            val f = filenameText.text.toString()
 
             if (f.isNotEmpty() && t.isNotEmpty()) {
                 val db = DBHelper(this, null)
 
-                db.addAudio(t, f)
+                val values = ContentValues()
+                values.put(DBHelper.COL_TITLE, t)
+                values.put(DBHelper.COL_SRC, f)
+
+                contentResolver.insert(
+                    AudioContentProvider.BASE_CONTENT_URI,
+                    values
+                )
+//                db.addAudio(t, f)
                 ViewModelProvider(this).get(AudioViewModel::class.java).loadAudio(this)
                 finish()
             }

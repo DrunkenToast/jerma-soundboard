@@ -3,6 +3,7 @@ package com.example.appdevproject.db
 import android.content.ContentProvider
 import android.content.ContentUris
 import android.content.ContentValues
+import android.content.UriMatcher
 import android.database.Cursor
 import android.database.sqlite.SQLiteException
 import android.database.sqlite.SQLiteQueryBuilder
@@ -13,6 +14,21 @@ class AudioContentProvider : ContentProvider() {
     private lateinit var mDBHelper: DBHelper
     companion object {
         var AudioMap = HashMap<String, String>()
+
+        const val AUTHORITY = "com.example.appdevproject"
+        val BASE_CONTENT_URI = Uri.parse("content://" + AUTHORITY)
+        const val AUDIO_PATH = "audio"
+
+        const val ALL_AUDIO = 100
+        const val AUDIO_ID = 101
+
+        fun buildUriMatcher(): UriMatcher {
+            val uriMatcher = UriMatcher(UriMatcher.NO_MATCH)
+            uriMatcher.addURI(AUTHORITY, AUDIO_PATH, ALL_AUDIO)
+            uriMatcher.addURI(AUTHORITY, "$AUDIO_PATH/#", AUDIO_ID)
+
+            return uriMatcher
+        }
     }
 
     override fun onCreate(): Boolean {
@@ -33,10 +49,10 @@ class AudioContentProvider : ContentProvider() {
         var sortOrder = _sortOrder
         qb.tables = DBHelper.TABLE_NAME
 
-        when (DBHelper.buildUriMatcher().match(uri)) {
-            DBHelper.ALL_AUDIO ->
+        when (buildUriMatcher().match(uri)) {
+            ALL_AUDIO ->
                 qb.projectionMap = AudioMap
-            DBHelper.AUDIO_ID ->
+            AUDIO_ID ->
                 qb.appendWhere(
                     DBHelper.COL_ID + "=" + uri.pathSegments[1]
                 )
@@ -56,9 +72,9 @@ class AudioContentProvider : ContentProvider() {
     }
 
     override fun getType(uri: Uri): String? {
-        when(DBHelper.buildUriMatcher().match(uri)) {
-            DBHelper.AUDIO_ID or DBHelper.ALL_AUDIO ->
-                return "vnd.android.cursor.dir/" + DBHelper.AUDIO_PATH
+        when(buildUriMatcher().match(uri)) {
+            AUDIO_ID or ALL_AUDIO ->
+                return "vnd.android.cursor.dir/$AUDIO_PATH"
             else -> throw java.lang.IllegalArgumentException("Unsupported URI: $uri")
         }
     }
@@ -67,7 +83,7 @@ class AudioContentProvider : ContentProvider() {
         val db = mDBHelper.writableDatabase
         val rowId = db.insert(DBHelper.TABLE_NAME, "", values)
         if (rowId > 0) {
-            val newUri = ContentUris.withAppendedId(DBHelper.BASE_CONTENT_URI, rowId)
+            val newUri = ContentUris.withAppendedId(BASE_CONTENT_URI, rowId)
             return newUri
         }
         db.close()
@@ -76,13 +92,13 @@ class AudioContentProvider : ContentProvider() {
 
     override fun delete(uri: Uri, selection: String?, selectionArgs: Array<out String>?): Int {
         val cnt: Int
-        when(DBHelper.buildUriMatcher().match(uri)) {
-            DBHelper.ALL_AUDIO -> {
+        when(buildUriMatcher().match(uri)) {
+            ALL_AUDIO -> {
                 val db = mDBHelper.writableDatabase
                 cnt = db.delete(DBHelper.TABLE_NAME, selection, selectionArgs)
                 db.close()
             }
-            DBHelper.AUDIO_ID -> {
+            AUDIO_ID -> {
                 val db = mDBHelper.writableDatabase
                 val id = uri.lastPathSegment
                 var s = ""
@@ -103,13 +119,13 @@ class AudioContentProvider : ContentProvider() {
 
     override fun update(uri: Uri, values: ContentValues?, selection: String?, selectionArgs: Array<out String>?): Int {
         val cnt: Int
-        when(DBHelper.buildUriMatcher().match(uri)) {
-            DBHelper.ALL_AUDIO -> {
+        when(buildUriMatcher().match(uri)) {
+            ALL_AUDIO -> {
                 val db = mDBHelper.writableDatabase
                 cnt = db.update(DBHelper.TABLE_NAME, values, selection, selectionArgs)
                 db.close()
             }
-            DBHelper.AUDIO_ID -> {
+            AUDIO_ID -> {
                 val db = mDBHelper.writableDatabase
                 val id = uri.lastPathSegment
                 var s = ""

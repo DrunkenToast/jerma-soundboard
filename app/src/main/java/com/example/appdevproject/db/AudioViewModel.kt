@@ -1,6 +1,7 @@
 package com.example.appdevproject.db
 
 import android.content.Context
+import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -15,7 +16,19 @@ class AudioViewModel: ViewModel() {
         val list = mutableListOf<AudioDataDB>()
         val db = DBHelper(c, null)
 
-        val cursor = db.getAudio()
+//        val cursor = db.getAudio()
+        val cursor = c.contentResolver.query(
+            Uri.withAppendedPath(
+                AudioContentProvider.BASE_CONTENT_URI,
+                AudioContentProvider.AUDIO_PATH
+            ), null, null, null, null,null
+        )
+
+        if (cursor == null) {
+            list.clear()
+            return
+        }
+
         cursor.moveToFirst()
         try {
             do {
