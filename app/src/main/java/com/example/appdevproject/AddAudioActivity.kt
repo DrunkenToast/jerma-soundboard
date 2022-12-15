@@ -1,22 +1,16 @@
 package com.example.appdevproject
 
-import android.content.ContentResolver
 import android.content.ContentValues
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.content.Intent
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
-import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.net.toUri
 import androidx.lifecycle.ViewModelProvider
 import com.example.appdevproject.db.AudioContentProvider
 import com.example.appdevproject.db.AudioViewModel
 import com.example.appdevproject.db.DBHelper
-import java.io.File
-import java.nio.file.Files
 
 class AddAudioActivity : AppCompatActivity() {
     lateinit var filenameText : TextView

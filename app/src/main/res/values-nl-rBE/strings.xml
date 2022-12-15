@@ -9,6 +9,7 @@
     <string name="settings">Instellingen</string>
     <string name="pick_name">Geef het een naam</string>
     <string name="add_audio">Geluidje toevoegen</string>
+    <string name="delete_audio">Geluidje doen verdwijnen</string>
     <string name="choose_file">Geluidje kiezen</string>
 
     <!-- Preferences -->
@@ -23,4 +24,5 @@
 
     <string name="title_activity_add_audio">Audio toevoegen</string>
     <string name="title_activity_settings">Instellingen</string>
+    <string name="title_audio_detail">Audio details</string>
 </resources>

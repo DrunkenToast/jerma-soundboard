@@ -28,6 +28,11 @@
             android:exported="false"
             android:label="@string/title_activity_add_audio"
             android:theme="@style/Theme.AppDevProject.NoActionBar" />
+        <activity
+            android:name=".AudioDetailActivity"
+            android:exported="false"
+            android:label="@string/title_audio_detail"
+            android:theme="@style/Theme.AppDevProject.NoActionBar" />
 
         <service
             android:name=".AudioService"

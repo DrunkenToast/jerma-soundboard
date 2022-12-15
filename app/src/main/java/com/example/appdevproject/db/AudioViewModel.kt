@@ -3,13 +3,21 @@ package com.example.appdevproject.db
 import android.content.Context
 import android.net.Uri
 import android.util.Log
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.appdevproject.audioList.AudioAdapter.AudioItem
 import com.example.appdevproject.data.AudioDataDB
 import java.lang.Exception
 
 class AudioViewModel: ViewModel() {
     val AudioDBList: MutableLiveData<MutableList<AudioDataDB>> = MutableLiveData<MutableList<AudioDataDB>>()
+    private val mutableSelectedAudioItem = MutableLiveData<AudioItem>()
+    val selectedAudioItem: LiveData<AudioItem> get() = mutableSelectedAudioItem
+
+    fun selectAudioItem(item: AudioItem) {
+        mutableSelectedAudioItem.value = item
+    }
 
     fun loadAudio(c: Context) {
         Log.d("NICE RON", "Loading audio")

@@ -21,7 +21,7 @@ class AudioAdapter(private val defaultAudioList: List<AudioData>, private val ac
 
     interface ActionListener {
         fun onClicked(audioID: Int)
-        fun onLongClicked(audioID: Int)
+        fun onLongClicked(audioItem: AudioItem)
     }
 
     init {
@@ -59,7 +59,7 @@ class AudioAdapter(private val defaultAudioList: List<AudioData>, private val ac
             button.setOnLongClickListener() {
                 currentAudioData?.let {
                     if (it.custom)
-                        listener.onLongClicked(it.id)
+                        listener.onLongClicked(it)
                 }
                 true
             }
@@ -71,6 +71,9 @@ class AudioAdapter(private val defaultAudioList: List<AudioData>, private val ac
 
             if (audio.custom) {
                 button.setBackgroundResource(R.drawable.jerma_button_alternative)
+            }
+            else {
+                button.setBackgroundResource(R.drawable.jerma_button)
             }
         }
     }
