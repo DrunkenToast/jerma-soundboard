@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="blue">#FF60C5C9</color>
+    <color name="blue_var">#FF6192C9 </color>
+    <color name="pinkishred">#FF881C4E</color>
+    <color name="pinkishred_var">#FF871C84</color>
     <color name="purple_200">#FFBB86FC</color>
     <color name="purple_500">#FF6200EE</color>
     <color name="purple_700">#FF3700B3</color>

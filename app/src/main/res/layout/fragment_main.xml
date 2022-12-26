@@ -1,43 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/constraint_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".MainFragment">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:elevation="4sp"
+            >
+            <TextView
+                android:id="@+id/stream_status_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                />
 
-
-    <TextView
-        android:id="@+id/stream_status_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="@+id/open_stream_but"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/open_stream_but" />
-    <!--    app:layout_constraintTop_toBottomOf="@+id/appbar"-->
-
-    <!--        app:layout_constraintEnd_toEndOf="@id/appbar"-->
-    <!--        app:layout_constraintTop_toBottomOf="@id/appbar"-->
-    <!-- Recyclerview ignores constraints, have to use margin instead and hardcode values :/ -->
-
-    <Button
-        android:id="@+id/open_stream_but"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="4dp"
-        android:layout_marginBottom="4dp"
-        android:text="@string/visit_stream"
-        app:layout_constraintBottom_toTopOf="@+id/rv_audio_list"
-        app:layout_constraintEnd_toEndOf="parent" />
-
+            <Button
+                android:id="@+id/open_stream_but"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="4dp"
+                android:layout_marginBottom="4dp"
+                android:text="@string/visit_stream"
+                android:layout_gravity="end"
+                />
+        </LinearLayout>
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_audio_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="104dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        />
+</LinearLayout>

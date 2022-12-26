@@ -12,12 +12,6 @@ import java.lang.Exception
 
 class AudioViewModel: ViewModel() {
     val AudioDBList: MutableLiveData<MutableList<AudioDataDB>> = MutableLiveData<MutableList<AudioDataDB>>()
-    private val mutableSelectedAudioItem = MutableLiveData<AudioItem>()
-    val selectedAudioItem: LiveData<AudioItem> get() = mutableSelectedAudioItem
-
-    fun selectAudioItem(item: AudioItem) {
-        mutableSelectedAudioItem.value = item
-    }
 
     fun loadAudio(c: Context) {
         Log.d("NICE RON", "Loading audio")

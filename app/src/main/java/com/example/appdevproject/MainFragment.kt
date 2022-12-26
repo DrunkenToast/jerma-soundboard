@@ -20,6 +20,7 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.commit
 import androidx.lifecycle.ViewModelProvider
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.GridLayoutManager
@@ -82,7 +83,7 @@ class MainFragment : Fragment() {
         val intent = Intent(activity, AudioService::class.java)
         activity?.bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE)
 
-        // oh no !! anyway
+        // oh no !! anyway.
         audioViewModel = activity?.let { ViewModelProvider(it).get(AudioViewModel::class.java) }!!
         context?.let { audioViewModel.loadAudio(it) }
     }
@@ -112,12 +113,27 @@ class MainFragment : Fragment() {
             }
 
             override fun onLongClicked(audioItem: AudioItem) {
-                val intent = Intent(
-                    activity,
-                    AudioDetailActivity::class.java
-                )
-                addAudioLauncher.launch(intent)
-                audioViewModel.selectAudioItem(audioItem)
+                if ((activity as MainActivity).isTablet()) {
+                    val bundle = Bundle()
+                    bundle.putInt("audioItem", audioItem.id)
+
+                    val frag = AudioDetailFragment()
+                    frag.arguments = bundle
+                    (activity as MainActivity).supportFragmentManager.commit {
+                        replace(R.id.details_fragment_container, frag)
+                        setReorderingAllowed(true)
+                    }
+                }
+                else {
+                    val intent = Intent(
+                        activity,
+                        AudioDetailActivity::class.java
+                    )
+                    intent.putExtra("audioItem", audioItem.id)
+                    addAudioLauncher.launch(intent)
+                }
+            //audioViewModel.selectAudioItem(audioItem)
+
 //                val db = DBHelper(this@MainActivity, null)
 //                contentResolver.delete(
 //                    Uri.withAppendedPath(

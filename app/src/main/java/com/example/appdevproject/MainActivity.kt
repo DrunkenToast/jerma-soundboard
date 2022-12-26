@@ -20,6 +20,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (isTablet()) {
+            Log.d("NICE RON", "Is a tablet!")
             setContentView(R.layout.activity_main_tablet)
             supportFragmentManager.commit {
                 replace(R.id.details_fragment_container, AudioDetailFragment())
@@ -28,6 +29,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
         else {
+            Log.d("NICE RON", "Is a phone!")
             setContentView(R.layout.activity_main_phone)
         }
 
@@ -68,14 +70,15 @@ class MainActivity : AppCompatActivity() {
     }
 
     val activityLauncher = registerForActivityResult(
-        ActivityResultContracts.StartActivityForResult()) {
+        ActivityResultContracts.StartActivityForResult()
+    ) {
         Log.d("TEST", "HERE")
-            audioViewModel.loadAudio(this@MainActivity)
+        audioViewModel.loadAudio(this@MainActivity)
     }
 
     fun isTablet(): Boolean {
-        return (resources.configuration.screenLayout and
+        return ((resources.configuration.screenLayout and
                 Configuration.SCREENLAYOUT_SIZE_MASK) >=
-                Configuration.SCREENLAYOUT_SIZE_LARGE
+                Configuration.SCREENLAYOUT_SIZE_LARGE)
     }
 }
