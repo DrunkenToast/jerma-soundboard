@@ -6,17 +6,23 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/white"
+    android:clipToPadding="false"
     tools:context=".MainFragment">
-        <LinearLayout
+        <FrameLayout
+            android:id="@+id/stream_status_frame"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:elevation="4sp"
+            android:clipToPadding="false"
+            android:background="@color/white"
             >
             <TextView
                 android:id="@+id/stream_status_text"
+                android:textColor="@color/black"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:gravity="center"
                 />
 
             <Button
@@ -28,7 +34,7 @@
                 android:text="@string/visit_stream"
                 android:layout_gravity="end"
                 />
-        </LinearLayout>
+        </FrameLayout>
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_audio_list"
         android:layout_width="match_parent"

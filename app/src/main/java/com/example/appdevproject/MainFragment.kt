@@ -15,6 +15,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.FrameLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
@@ -38,6 +39,7 @@ class MainFragment : Fragment() {
     private lateinit var audioViewModel: AudioViewModel
     private lateinit var streamStatusText: TextView
     private lateinit var visitStreamButton: Button
+    private var streamSurface: FrameLayout? = null
 
     private fun serviceLoadAudioDB() {
         val audioList = audioViewModel.AudioDBList.value
@@ -54,9 +56,6 @@ class MainFragment : Fragment() {
             mBound = true
 
             setupPermissions()
-
-            Toast.makeText(activity, "Audio service connected",
-                Toast.LENGTH_SHORT).show()
 
             for (audio in DataSource().getAudioList()) {
                 mService.load(audio.id, audio.src)
@@ -93,8 +92,11 @@ class MainFragment : Fragment() {
 
         streamStatusText = view.findViewById(R.id.stream_status_text)
         visitStreamButton = view.findViewById(R.id.open_stream_but)
+        streamSurface = view.findViewById(R.id.stream_status_frame)
 
         setupTwitchStreamViews()
+
+        Log.d("NICE RON", "on view created")
 
         // RECYCLERVIEW
         val audioList = DataSource().getAudioList()
@@ -122,6 +124,7 @@ class MainFragment : Fragment() {
                     (activity as MainActivity).supportFragmentManager.commit {
                         replace(R.id.details_fragment_container, frag)
                         setReorderingAllowed(true)
+                        addToBackStack(null) // back to unselect item
                     }
                 }
                 else {
@@ -132,20 +135,25 @@ class MainFragment : Fragment() {
                     intent.putExtra("audioItem", audioItem.id)
                     addAudioLauncher.launch(intent)
                 }
-            //audioViewModel.selectAudioItem(audioItem)
-
-//                val db = DBHelper(this@MainActivity, null)
-//                contentResolver.delete(
-//                    Uri.withAppendedPath(
-//                        AudioContentProvider.BASE_CONTENT_URI,
-//                        AudioContentProvider.AUDIO_PATH + "/$audioID"
-//                    )
-//                , null, null
-//                )
-//                db.deleteAudio(audioID)
-//                audioViewModel.loadAudio(this@MainActivity)
             }
         })
+
+        recyclerView.addOnScrollListener(
+            object : RecyclerView.OnScrollListener() {
+                override fun onScrollStateChanged(
+                    recyclerView: RecyclerView,
+                    newState: Int
+                ) {
+                    super.onScrollStateChanged(recyclerView, newState)
+                    if (recyclerView.canScrollVertically(-1)) {
+                        streamSurface!!.elevation = 50f
+                    }
+                    else {
+                        streamSurface!!.elevation = 0f
+                    }
+                }
+            }
+        )
 
         // Update recyclerview | Observe changes to audio list
         Log.d("MAIN FRAG", "Setting observer")

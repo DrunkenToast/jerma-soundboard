@@ -22,11 +22,6 @@ class MainActivity : AppCompatActivity() {
         if (isTablet()) {
             Log.d("NICE RON", "Is a tablet!")
             setContentView(R.layout.activity_main_tablet)
-            supportFragmentManager.commit {
-                replace(R.id.details_fragment_container, AudioDetailFragment())
-                setReorderingAllowed(true)
-                addToBackStack(null) // maybe remove
-            }
         }
         else {
             Log.d("NICE RON", "Is a phone!")
@@ -36,7 +31,6 @@ class MainActivity : AppCompatActivity() {
         supportFragmentManager.commit {
             replace(R.id.main_fragment_container, MainFragment())
             setReorderingAllowed(true)
-            addToBackStack(null) // maybe remove
         }
 
         audioViewModel = ViewModelProvider(this)[AudioViewModel::class.java]
