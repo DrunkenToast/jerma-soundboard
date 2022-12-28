@@ -124,7 +124,6 @@ class MainFragment : Fragment() {
                     (activity as MainActivity).supportFragmentManager.commit {
                         replace(R.id.details_fragment_container, frag)
                         setReorderingAllowed(true)
-                        addToBackStack(null) // back to unselect item
                     }
                 }
                 else {

@@ -9,35 +9,33 @@
     android:background="@color/white"
     android:clipToPadding="false"
     tools:context=".MainFragment">
-        <FrameLayout
-            android:id="@+id/stream_status_frame"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:clipToPadding="false"
-            android:background="@color/white"
-            >
-            <TextView
-                android:id="@+id/stream_status_text"
-                android:textColor="@color/black"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                />
 
-            <Button
-                android:id="@+id/open_stream_but"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="4dp"
-                android:layout_marginBottom="4dp"
-                android:text="@string/visit_stream"
-                android:layout_gravity="end"
-                />
-        </FrameLayout>
+    <FrameLayout
+        android:id="@+id/stream_status_frame"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:clipToPadding="false">
+
+        <TextView
+            android:id="@+id/stream_status_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textColor="@color/black" />
+
+        <Button
+            android:id="@+id/open_stream_but"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginEnd="4dp"
+            android:layout_marginBottom="4dp"
+            android:text="@string/visit_stream" />
+    </FrameLayout>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_audio_list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        />
+        android:layout_height="wrap_content" />
 </LinearLayout>

@@ -25,4 +25,5 @@
     <string name="title_activity_add_audio">Audio toevoegen</string>
     <string name="title_activity_settings">Instellingen</string>
     <string name="title_audio_detail">Audio details</string>
+    <string name="add_audio_desc">Voeg audio toe</string>
 </resources>
