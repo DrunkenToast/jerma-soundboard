@@ -4,19 +4,17 @@ import android.content.res.Resources
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.espresso.Espresso
-import androidx.test.espresso.ViewAction
-import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.rules.ActivityScenarioRule
-import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.example.appdevproject.audioList.AudioAdapter
 import org.hamcrest.Description
 import org.hamcrest.Matcher
 import org.hamcrest.TypeSafeMatcher
+import androidx.test.espresso.IdlingResource
 
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -31,9 +29,11 @@ import org.junit.Rule
  * See [testing documentation](http://d.android.com/tools/testing).
  */
 @RunWith(AndroidJUnit4::class)
-class ExampleInstrumentedTest {
+class MainActivityInstrumentedTest {
     @get:Rule var mActivityScenarioRule: ActivityScenarioRule<MainActivity> =
         ActivityScenarioRule(MainActivity::class.java)
+
+    private lateinit var mIdlingResource: IdlingResource
 
     @Before
     fun startMainActivity() {
@@ -45,17 +45,35 @@ class ExampleInstrumentedTest {
     }
 
     @Test
-    fun testFirstItemTitle() {
-        // Check if the first item has the correct title
+    // Check if the first items have the correct title
+    // I want the first three items to always be AA, EE and OO
+    fun testFirstItemsTitle() {
         Espresso
             .onView(RecyclerViewMatcher(R.id.rv_audio_list)
-            .atPositionOnView(0, R.id.audio_title))
+                .atPositionOnView(0, R.id.audio_title))
             .check(matches(withText("AA")))
+
+        Espresso
+            .onView(RecyclerViewMatcher(R.id.rv_audio_list)
+                .atPositionOnView(1, R.id.audio_title))
+            .check(matches(withText("EE")))
+
+        Espresso
+            .onView(RecyclerViewMatcher(R.id.rv_audio_list)
+            .atPositionOnView(2, R.id.audio_title))
+            .check(matches(withText("OO")))
+    }
+
+    @Test
+    // Make sure the stream button contains the correct text
+    fun testStreamButtonText() {
+        Espresso
+            .onView(withId(R.id.open_stream_but))
+            .check(matches(withText(R.string.visit_stream)))
     }
 }
 
 class RecyclerViewMatcher(private val recyclerViewId: Int) {
-
     fun atPosition(position: Int): Matcher<View> {
         return atPositionOnView(position, -1)
     }
