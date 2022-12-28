@@ -10,7 +10,7 @@
             android:entryValues="@array/playback_values"
             app:useSimpleSummaryProvider="true"
             android:key="@string/playback_pref"
-            android:defaultValue="3"
+            android:defaultValue="@string/normal_playback"
             />
 
         <ListPreference

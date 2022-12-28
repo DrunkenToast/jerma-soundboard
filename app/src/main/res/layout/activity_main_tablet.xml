@@ -36,7 +36,7 @@
             android:id="@+id/main_fragment_container"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            app:layout_constraintVertical_weight="4"
+            app:layout_constraintVertical_weight="3"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toTopOf="@id/details_fragment_container"
             >

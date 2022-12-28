@@ -52,7 +52,6 @@ class AudioAdapter(private val defaultAudioList: List<AudioData>, private val ac
             button.setOnClickListener {
                 currentAudioData?.let {
                     listener.onClicked(it.id)
-
                 }
             }
 

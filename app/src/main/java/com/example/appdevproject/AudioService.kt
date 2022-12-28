@@ -1,12 +1,12 @@
 package com.example.appdevproject
 
-import android.Manifest
 import android.app.Service
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.database.Cursor
 import android.media.AudioAttributes
+import android.media.MediaPlayer
+import android.media.PlaybackParams
 import android.media.SoundPool
 import android.net.Uri
 import android.os.Binder
@@ -14,7 +14,6 @@ import android.os.IBinder
 import android.provider.MediaStore
 import android.util.Log
 import android.widget.Toast
-import androidx.core.content.ContextCompat
 import androidx.loader.content.CursorLoader
 import androidx.preference.PreferenceManager
 
@@ -37,37 +36,49 @@ class AudioService : Service() {
     }
 
     // AudioID : loadID
-    private var loadedIDs: HashMap<Int, Int> = HashMap()
-
-    private var soundPool: SoundPool = SoundPool.Builder()
-    .setMaxStreams(20)
-    .setAudioAttributes(
-        AudioAttributes.Builder()
-            .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
-            .setUsage(AudioAttributes.USAGE_MEDIA)
-            .build()
-    ).build()
+    private var mediaPlayers: HashMap<Int, MediaPlayer> = HashMap()
 
     fun load(audioID: Int, src: Int) {
         unload(audioID)
-        loadedIDs[audioID] = soundPool.load(mContext, src, 1)
+        val mediaPlayer = MediaPlayer.create(mContext, src)
+        mediaPlayers[audioID] = mediaPlayer
     }
 
     fun load(audioID: Int, src: String) {
-        unload(audioID)
-        // TODO: Crashes because of permissions (or something else)
-        //loadedIDs[audioID] = soundPool.load(getRealPathFromURI(mContext, src), 1)
+        // Still doesn't work :/
+        return
+//        unload(audioID)
+//        try {
+//            val mediaPlayer = MediaPlayer()
+//            Log.d("NICE RON", "SRC: " + src)
+//            val uri = Uri.parse(src)
+//            mediaPlayer.setDataSource(mContext, uri)
+//            mediaPlayer.prepare()
+//            mediaPlayers[audioID] = mediaPlayer
+//        }
+//        catch (e: Exception) {
+//            Log.e("NICE RON", "error while loading audio", e)
+//        }
     }
 
     private fun unload(audioID: Int) {
-        val soundID = loadedIDs[audioID]
-        if (soundID != null)
-            soundPool.unload(soundID)
+        val mediaPlayer = mediaPlayers[audioID]
+        if (mediaPlayer != null) {
+            mediaPlayer.stop()
+            mediaPlayer.release()
+        }
     }
 
     fun play(audioID: Int, volume: Float) {
-        loadedIDs[audioID]?.let {
-            soundPool.play(it, volume, volume, 1, 0, getPlaybackRate())
+        mediaPlayers[audioID]?.let {
+            it.setVolume(volume, volume)
+
+            // Set playback speed
+            val playbackParams = PlaybackParams()
+            playbackParams.speed = getPlaybackRate()
+            it.playbackParams = playbackParams
+
+            it.start()
         }
     }
 

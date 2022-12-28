@@ -1,6 +1,5 @@
 package com.example.appdevproject.data
 
-import android.content.res.Resources
 import com.example.appdevproject.R
 
 // ID's of default sound is negative, while DB is positive. This is for simplification
@@ -194,6 +193,71 @@ fun audios(): List<AudioData> {
             src = R.raw.giant_enemy_spider,
             custom = false,
         ),
-
+        AudioData(
+            id = -32,
+            title = "Shove it",
+            src = R.raw.shove_it,
+            custom = false,
+        ),
+        AudioData(
+            id = -33,
+            title = "Daugh!",
+            src = R.raw.daugh,
+            custom = false,
+        ),
+        AudioData(
+            id = -34,
+            title = "Chop chop m8",
+            src = R.raw.chop_chop,
+            custom = false,
+        ),
+        AudioData(
+            id = -35,
+            title = "Spy cycle",
+            src = R.raw.spy_cycle,
+            custom = false,
+        ),
+        AudioData(
+            id = -36,
+            title = "Meat grinder",
+            src = R.raw.meat_grinder,
+            custom = false,
+        ),
+        AudioData(
+            id = -37,
+            title = "Meat grinder 2",
+            src = R.raw.meat_grinder_2,
+            custom = false,
+        ),
+        AudioData(
+            id = -38,
+            title = "Clip that",
+            src = R.raw.clip_that,
+            custom = false,
+        ),
+        AudioData(
+            id = -39,
+            title = "Don't say swears",
+            src = R.raw.dont_say_swears,
+            custom = false,
+        ),
+        AudioData(
+            id = -40,
+            title = "Lala",
+            src = R.raw.lala,
+            custom = false,
+        ),
+        AudioData(
+            id = -41,
+            title = "Arhj!",
+            src = R.raw.arhj,
+            custom = false,
+        ),
+        AudioData(
+            id = -42,
+            title = "Shut up",
+            src = R.raw.shut_up,
+            custom = false,
+        ),
     )
 }

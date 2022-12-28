@@ -22,13 +22,13 @@
             android:id="@+id/audio_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Default A-pose" />
+            />
 
         <TextView
             android:id="@+id/audio_source"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="No saucc" />
+            />
 
         <Button
             android:id="@+id/audioDeleteButton"

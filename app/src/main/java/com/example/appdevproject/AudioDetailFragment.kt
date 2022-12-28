@@ -92,13 +92,13 @@ class AudioDetailFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         audioTitleText = view.findViewById(R.id.audio_title)
-        audioSourceText = view.findViewById(R.id.audio_title)
+        audioSourceText = view.findViewById(R.id.audio_source)
 
         audioItem?.let {
             Log.d("NICE RON", "AUDIO TEXT EXISTS")
             audioTitleText.text = it.title
+            audioSourceText.text = it.src
         }
-
 
         view.findViewById<Button>(R.id.audioDeleteButton).setOnClickListener {
             if (audioItem == null) return@setOnClickListener

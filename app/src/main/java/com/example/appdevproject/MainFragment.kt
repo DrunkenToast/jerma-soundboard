@@ -197,6 +197,7 @@ class MainFragment : Fragment() {
     ) {
 //        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         activity?.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        Log.d("NICE RON", "test!!!")
         when (requestCode) {
             PERMISSION_REQUEST_CODE -> {
                 if (grantResults.isEmpty() || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
