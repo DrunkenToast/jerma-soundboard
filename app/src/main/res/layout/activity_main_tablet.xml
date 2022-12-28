@@ -26,26 +26,31 @@
             app:layout_constraintTop_toTopOf="parent"
             />
     </com.google.android.material.appbar.AppBarLayout>
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         app:layout_constraintTop_toBottomOf="@id/appbar"
-        android:orientation="vertical">
+        app:layout_constraintBottom_toBottomOf="parent"
+        >
         <FrameLayout
             android:id="@+id/main_fragment_container"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="70"
+            app:layout_constraintVertical_weight="4"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/details_fragment_container"
             >
         </FrameLayout>
         <FrameLayout
             android:id="@+id/details_fragment_container"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="30"
+            app:layout_constraintVertical_weight="1"
+            app:layout_constraintTop_toBottomOf="@id/main_fragment_container"
+            app:layout_constraintBottom_toBottomOf="parent"
             >
         </FrameLayout>
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/audio_fab"

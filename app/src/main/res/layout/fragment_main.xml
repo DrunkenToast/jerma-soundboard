@@ -6,7 +6,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/white"
     android:clipToPadding="false"
     tools:context=".MainFragment">
 
@@ -14,15 +13,16 @@
         android:id="@+id/stream_status_frame"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"
+        android:background="?attr/colorPrimaryDark"
         android:clipToPadding="false">
 
         <TextView
             android:id="@+id/stream_status_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
             android:gravity="center"
-            android:textColor="@color/black" />
+            android:textColor="?attr/colorOnPrimary" />
 
         <Button
             android:id="@+id/open_stream_but"

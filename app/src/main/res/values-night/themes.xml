@@ -4,7 +4,8 @@
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/pinkishred</item>
         <item name="colorPrimaryVariant">@color/pinkishred_var</item>
-        <item name="colorOnPrimary">@color/black</item>
+        <item name="colorPrimaryDark">@color/pinkishred_dark</item>
+        <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/blue</item>
         <item name="colorSecondaryVariant">@color/blue_var</item>
