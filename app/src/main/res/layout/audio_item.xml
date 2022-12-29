@@ -21,15 +21,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="5dp"
-
-        android:text="Sample text"
         android:gravity="center"
         android:textStyle="bold"
         android:textColor="@color/black"
 
-        android:autoSizeMaxTextSize="60dp"
-        android:autoSizeMinTextSize="20dp"
-        android:autoSizeStepGranularity="1sp"
+        android:autoSizeMaxTextSize="64dp"
+        android:autoSizeMinTextSize="18dp"
+        android:autoSizeStepGranularity="4sp"
         android:autoSizeTextType="uniform"
 
         app:layout_constraintTop_toTopOf="parent"

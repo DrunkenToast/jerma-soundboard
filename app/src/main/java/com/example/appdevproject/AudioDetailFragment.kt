@@ -19,16 +19,6 @@ import com.example.appdevproject.db.AudioContentProvider
 import com.example.appdevproject.db.AudioViewModel
 import com.example.appdevproject.db.DBHelper
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [AudioDetailFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 // Groetjes, Xander xoxo
 class AudioDetailFragment : Fragment() {
     private var audioItem: AudioDataDB? = null
@@ -40,20 +30,15 @@ class AudioDetailFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-
         // oh no !! anyway
         audioViewModel = activity?.let { ViewModelProvider(it)[AudioViewModel::class.java] }!!
         var id: Int? = null
-        Log.d("NICE RON", "create called")
 
         arguments?.let {
-            Log.d("NICE RON", "Argument exists")
             id = it.getInt("audioItem")
         }
 
         if (id == null) return
-
-        Log.d("NICE RON", "id exists")
 
         val cursor = context?.contentResolver?.query(
             Uri.withAppendedPath(
@@ -96,7 +81,7 @@ class AudioDetailFragment : Fragment() {
 
         audioItem?.let {
             Log.d("NICE RON", "AUDIO TEXT EXISTS")
-            audioTitleText.text = it.title
+            audioTitleText.text = "#${it.id} ${it.title}"
             audioSourceText.text = it.src
         }
 
@@ -112,7 +97,6 @@ class AudioDetailFragment : Fragment() {
             )
 
             if (activity is MainActivity) { // empty the fragment
-                Log.d("NICE RON", "is main activity")
                 val fragMan = activity?.supportFragmentManager
                 val fragTransaction = fragMan?.beginTransaction()
                 fragTransaction?.remove(this)?.commit()
@@ -122,32 +106,11 @@ class AudioDetailFragment : Fragment() {
                 context?.let { audioViewModel.loadAudio(it) }
             }
             else {
-                Log.d("NICE RON", "is not main activity")
                 // We finish the activity, main activity has to handle the finish
                 // and then reload audio
                 activity?.finish()
             }
         }
 
-    }
-
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment AudioDetailFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            AudioDetailFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
     }
 }

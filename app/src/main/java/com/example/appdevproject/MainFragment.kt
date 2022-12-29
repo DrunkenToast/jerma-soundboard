@@ -19,6 +19,7 @@ import android.widget.FrameLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.commit
@@ -31,6 +32,7 @@ import com.example.appdevproject.audioList.AudioAdapter
 import com.example.appdevproject.audioList.AudioAdapter.AudioItem
 import com.example.appdevproject.data.DataSource
 import com.example.appdevproject.db.AudioViewModel
+import com.google.android.material.appbar.AppBarLayout
 
 class MainFragment : Fragment() {
     private val PERMISSION_REQUEST_CODE = 100
@@ -39,7 +41,7 @@ class MainFragment : Fragment() {
     private lateinit var audioViewModel: AudioViewModel
     private lateinit var streamStatusText: TextView
     private lateinit var visitStreamButton: Button
-    private var streamSurface: FrameLayout? = null
+    private var streamSurface: AppBarLayout? = null
 
     private fun serviceLoadAudioDB() {
         val audioList = audioViewModel.AudioDBList.value
@@ -137,23 +139,6 @@ class MainFragment : Fragment() {
             }
         })
 
-        recyclerView.addOnScrollListener(
-            object : RecyclerView.OnScrollListener() {
-                override fun onScrollStateChanged(
-                    recyclerView: RecyclerView,
-                    newState: Int
-                ) {
-                    super.onScrollStateChanged(recyclerView, newState)
-                    if (recyclerView.canScrollVertically(-1)) {
-                        streamSurface!!.elevation = 50f
-                    }
-                    else {
-                        streamSurface!!.elevation = 0f
-                    }
-                }
-            }
-        )
-
         // Update recyclerview | Observe changes to audio list
         Log.d("MAIN FRAG", "Setting observer")
         audioViewModel.AudioDBList.observe(viewLifecycleOwner) {
@@ -161,6 +146,7 @@ class MainFragment : Fragment() {
             (recyclerView.adapter as AudioAdapter).setAudioDB(it)
         }
     }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -185,9 +171,6 @@ class MainFragment : Fragment() {
         visitStreamButton.setOnClickListener {
             startActivity(twitchOpenIntent)
         }
-    }
-
-    companion object {
     }
 
     override fun onRequestPermissionsResult(
